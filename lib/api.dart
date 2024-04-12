@@ -9,7 +9,7 @@ class Api {
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      throw Exception('Failed to load videocloud info');
+      throw Exception('Failed to load exhange rates${response.statusCode}');
     }
   }
 }
