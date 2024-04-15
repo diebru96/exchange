@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:exchange/api.dart';
+import 'package:exchange/language/language.dart';
 import 'package:exchange/models/exchange_model.dart';
 
 class ConversionLogic {
@@ -24,7 +24,7 @@ class ConversionLogic {
         currencyStreamController.sink.add(exchangerate!);
         return exchangerate;
       } else {
-        throw Exception('Failed to parse exchange rates');
+        throw Exception(Languages.of().errorLoadingExchangeRates);
       }
     } catch (e) {
       currencyStreamController.sink.addError(e.toString());

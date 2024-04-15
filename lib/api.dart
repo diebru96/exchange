@@ -1,4 +1,5 @@
 import 'package:exchange/consts/consts.dart';
+import 'package:exchange/language/language.dart';
 import 'package:http/http.dart';
 
 class Api {
@@ -10,7 +11,7 @@ class Api {
       if (response.statusCode == 200) {
         return response.body;
       } else {
-        throw Exception('Failed to load exchange rates ${response.statusCode}');
+        throw Exception(Languages.of().apiError + '${response.statusCode}');
       }
     } catch (e) {
       rethrow;

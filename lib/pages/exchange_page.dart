@@ -1,5 +1,6 @@
 import 'package:exchange/consts/colors.dart';
 import 'package:exchange/consts/consts.dart';
+import 'package:exchange/language/language.dart';
 import 'package:exchange/logic/exchange_logic.dart';
 import 'package:exchange/models/exchange_model.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _ExchangePageState extends State<ExchangePage> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Current Exchange Rates',
+        title: Text(Languages.of().currentExchange,
             style: TextStyle(color: backgroundColor)),
       ),
       body: StreamBuilder<Exchangerate>(
@@ -37,7 +38,7 @@ class _ExchangePageState extends State<ExchangePage> {
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: Text("Error: ${snapshot.error}"),
+                child: Text("${snapshot.error}"),
               );
             } else if (snapshot.hasData) {
               return Column(
@@ -58,9 +59,9 @@ class _ExchangePageState extends State<ExchangePage> {
                                 Icons.monetization_on,
                                 color: dividerColor,
                               ),
-                              const Text(
-                                "Currency selected:",
-                                style: TextStyle(
+                              Text(
+                                Languages.of().currencySelected,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w500, fontSize: 16),
                               ),
                             ],
