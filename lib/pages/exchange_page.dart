@@ -1,4 +1,6 @@
-import 'package:exchange/logic/conversion_logic.dart';
+import 'package:exchange/consts/colors.dart';
+import 'package:exchange/consts/consts.dart';
+import 'package:exchange/logic/exchange_logic.dart';
 import 'package:exchange/models/exchange_model.dart';
 import 'package:flutter/material.dart';
 
@@ -13,17 +15,18 @@ class _ExchangePageState extends State<ExchangePage> {
   ConversionLogic conversionLogic = ConversionLogic();
   @override
   void initState() {
-    conversionLogic.getExchangeRates('USD');
+    conversionLogic.getExchangeRates(starting_currency);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Current Exchange Rates',
-            style: TextStyle(color: Colors.white)),
+        title: Text('Current Exchange Rates',
+            style: TextStyle(color: backgroundColor)),
       ),
       body: StreamBuilder<Exchangerate>(
           stream: conversionLogic.currencyStreamController.stream,
@@ -43,8 +46,8 @@ class _ExchangePageState extends State<ExchangePage> {
                       margin: const EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey.shade600, width: 1))),
+                              bottom:
+                                  BorderSide(color: dividerColor, width: 1))),
                       height: 50,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -53,7 +56,7 @@ class _ExchangePageState extends State<ExchangePage> {
                             children: [
                               Icon(
                                 Icons.monetization_on,
-                                color: Colors.grey.shade600,
+                                color: dividerColor,
                               ),
                               const Text(
                                 "Currency selected:",
@@ -93,13 +96,12 @@ class _ExchangePageState extends State<ExchangePage> {
   dropDownSelect() {
     return DropdownButton<String>(
       value: conversionLogic.currentCurrency,
-      icon:
-          const Icon(Icons.keyboard_arrow_down, color: Colors.deepPurpleAccent),
+      icon: Icon(Icons.keyboard_arrow_down, color: selectionColor),
       elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
+      style: TextStyle(color: darkSelectionColor),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: selectionColor,
       ),
       onChanged: (String? value) {
         if (value != null) {
@@ -120,7 +122,10 @@ class _ExchangePageState extends State<ExchangePage> {
     return Container(
       padding: const EdgeInsets.only(left: 5, right: 5),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey.shade300))),
+          color: currency == conversionLogic.currentCurrency
+              ? lightSelectionColor.withOpacity(0.3)
+              : backgroundColor,
+          border: Border(bottom: BorderSide(color: lightTextColor))),
       child: InkWell(
         onTap: () {
           conversionLogic.convertBasedOnCurrency(currency);
@@ -130,12 +135,12 @@ class _ExchangePageState extends State<ExchangePage> {
           children: [
             Text(currency,
                 style: currency == conversionLogic.currentCurrency
-                    ? const TextStyle(color: Colors.deepPurpleAccent)
+                    ? TextStyle(color: selectionColor)
                     : null),
             Text(
-              value.toString(),
+              value.toStringAsFixed(conversionLogic.numberOfDecimals),
               style: currency == conversionLogic.currentCurrency
-                  ? const TextStyle(color: Colors.deepPurpleAccent)
+                  ? TextStyle(color: selectionColor)
                   : null,
             ),
           ],
